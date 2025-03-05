@@ -1,13 +1,4 @@
-<div style="display: flex; align-items: center; padding: 25px 40px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-    <img alt="spot_taxi.jpeg" src="readme-image/spot_taxi.jpeg" 
-         style="width: 65px; height: 65px; object-fit: cover; border-radius: 12px; border: 2px solid #fdcb6e;">
-    <div style="margin-left: 20px;">
-        <h1 style="margin: 0; font-size: 34px; font-weight: 800; color: #2d3436; letter-spacing: 1.2px;">
-            斑点狗打车
-            <span style="font-size: 16px; color: #636e72; margin-left: 12px; font-weight: 400;">高并发出行平台</span>
-        </h1>
-    </div>
-</div>
+![img.png](readme-image/img.png)
 
 *******
 ## 后端亮点💡
@@ -41,98 +32,30 @@
 
 # 📱前端场景演示
 *（本仓库目前仅包含后端代码，暂未包含前端代码）*
-## 一、乘客端🧒
-<div style="text-align: center;">
-</div>
-<div style="display: flex; margin-bottom: 20px;">
-  <div style="width: 33%; text-align: center;">
-    <img alt="customer_index.jpg" src="readme-image/customer_index.jpg" width="200"/>
-    <div style="margin-top: 5px;">首页</div>
-  </div>
-  <div style="width: 33%; text-align: center;">
-    <img alt="customer_chooselocation.jpg" src="readme-image/customer_chooselocation.jpg" width="200"/>
-    <div style="margin-top: 5px;">选择目的地功能</div>
-  </div>
-<div style="width: 33%; text-align: center;">
-    <img alt="customer_coupon.jpg" src="readme-image/customer_coupon.jpg" width="200"/>
-    <div style="margin-top: 5px;">浏览优惠券功能</div>
-  </div>
-</div>
+## 一、乘客端
 
-<div style="display: flex; margin-bottom: 20px;">
-  <div style="width: 33%; text-align: center;">
-    <img alt="customer_ing.jpg" src="readme-image/customer_ing.jpg" width="200"/>
-    <div style="margin-top: 5px;">呼叫订单功能</div>
-  </div>
-<div style="width: 33%; text-align: center;">
-    <img alt="customer_waitorder.jpg" src="readme-image/customer_waitorder.jpg" width="200"/>
-    <div style="margin-top: 5px;">等待司机接单功能</div>
-  </div>
-<div style="width: 33%; text-align: center;">
-    <img alt="customer_waitdriver.jpg" src="readme-image/customer_waitdriver.jpg" width="200"/>
-    <div style="margin-top: 5px;">等待司机到达功能</div>
-  </div>
-</div>
-<div style="display: flex; margin-bottom: 20px;">
-  <div style="width: 33%; text-align: center;">
-<img alt="customer_ing.jpg" src="readme-image/customer_ing.jpg" width="200"/>
-    <div style="margin-top: 5px;">行程中</div>
-  </div>
-  <div style="width: 33%; text-align: center;">
-    <img alt="customer_payment.jpg" src="readme-image/customer_payment.jpg" width="200"/>
-    <div style="margin-top: 5px;">支付功能</div>
-  </div>
-  <div style="width: 33%; text-align: center;">
-    <img alt="customer_orders.jpg" src="readme-image/customer_orders.jpg" width="200"/>
-    <div style="margin-top: 5px;">查看历史订单功能</div>
-  </div>
-</div>
+| 首页 | 选择目的地功能 | 浏览优惠券功能 |
+| :---: | :---: | :---: |
+| ![customer_index.jpg](readme-image/customer_index.jpg)| ![customer_chooselocation.jpg](readme-image/customer_chooselocation.jpg)  | ![customer_coupon.jpg](readme-image/customer_coupon.jpg)  |
 
-## 二、司机端🚗
+| 呼叫订单功能 | 等待司机接单功能 | 等待司机到达功能 |
+| :---: | :---: | :---: |
+| ![customer_ing.jpg](readme-image/customer_ing.jpg)  | ![customer_waitorder.jpg](readme-image/customer_waitorder.jpg)  | ![customer_waitdriver.jpg](readme-image/customer_waitdriver.jpg)  |
 
-<div style="text-align: center;">
-</div>
-<div style="display: flex; margin-bottom: 20px;">
-  <div style="width: 33%; text-align: center;">
-    <img alt="driver_index.jpg" src="readme-image/driver_index.jpg" width="200"/>
-    <div style="margin-top: 5px;">首页</div>
-  </div>
-  <div style="width: 33%; text-align: center;">
-    <img alt="driver_waitorder.jpg" src="readme-image/driver_waitorder.jpg" width="200"/>
-    <div style="margin-top: 5px;">等待接单功能</div>
-  </div>
-<div style="width: 33%; text-align: center;">
-    <img alt="driver_takeorder.jpg" src="readme-image/driver_takeorder.jpg" width="200"/>
-    <div style="margin-top: 5px;">抢单功能</div>
-  </div>
-</div>
+| 行程中 | 支付功能 | 查看历史订单功能 |
+| :---: | :---: | :---: |
+| ![customer_ing.jpg](readme-image/customer_ing.jpg)  | ![customer_payment.jpg](readme-image/customer_payment.jpg)  | ![customer_orders.jpg](readme-image/customer_orders.jpg)  |
 
-<div style="display: flex; margin-bottom: 20px;">
-  <div style="width: 33%; text-align: center;">
-    <img alt="driver_gotocustomer.jpg" src="readme-image/driver_gotocustomer.jpg" width="200"/>
-    <div style="margin-top: 5px;">前往乘客位置功能</div>
-  </div>
-    <div style="width: 33%; text-align: center;">
-<img alt="driver_ing.jpg" src="readme-image/driver_ing.jpg" width="200"/>
-    <div style="margin-top: 5px;">订单行程中功能</div>
-  </div>
-  <div style="width: 33%; text-align: center;">
-    <img alt="driver_payment1.jpg" src="readme-image/driver_payment1.jpg" width="200"/>
-    <div style="margin-top: 5px;">收取额外费用功能</div>
-  </div>
-</div>
+## 二、司机端
 
-<div style="display: flex; margin-bottom: 20px;">
-  <div style="width: 33%; text-align: center;">
-    <img alt="driver_payment2.jpg" src="readme-image/driver_payment2.jpg" width="200"/>
-    <div style="margin-top: 5px;">结账查看费用详情功能</div>
-  </div>
-    <div style="width: 33%; text-align: center;">
-<img alt="driver_payment3.jpg" src="readme-image/driver_payment3.jpg" width="200"/>
-    <div style="margin-top: 5px;">订单实时分账功能</div>
-  </div>
-  <div style="width: 33%; text-align: center;">
-    <img alt="driver_orders.jpg" src="readme-image/driver_orders.jpg" width="200"/>
-    <div style="margin-top: 5px;">查看历史订单功能</div>
-  </div>
-</div>
+| 首页 | 等待接单功能 | 抢单功能 |
+| :---: | :---: | :---: |
+| ![driver_index.jpg](readme-image/driver_index.jpg)  | ![driver_waitorder.jpg](readme-image/driver_waitorder.jpg)  | ![driver_takeorder.jpg](readme-image/driver_takeorder.jpg)  |
+
+| 前往乘客位置功能 | 订单行程中功能 | 收取额外费用功能 |
+| :---: | :---: | :---: |
+| ![driver_gotocustomer.jpg](readme-image/driver_gotocustomer.jpg)  | ![driver_ing.jpg](readme-image/driver_ing.jpg)  | ![driver_payment1.jpg](readme-image/driver_payment1.jpg)  |
+
+| 结账查看费用详情功能 | 订单实时分账功能 | 查看历史订单功能 |
+| :---: | :---: | :---: |
+| ![driver_payment2.jpg](readme-image/driver_payment2.jpg)  | ![driver_payment3.jpg](readme-image/driver_payment3.jpg)  | ![driver_orders.jpg](readme-image/driver_orders.jpg)  |
