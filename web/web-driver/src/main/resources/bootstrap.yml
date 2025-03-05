@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: web-driver
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        namespace: ${spring.profiles.active}
+      discovery:
+        namespace: ${spring.profiles.active}
+  config:
+    import:
+      - nacos:web-driver.yaml
+      - nacos:common-account.yaml
+

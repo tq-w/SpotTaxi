@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>service-client</artifactId>
+        <groupId>com.spot.taxi</groupId>
+        <version>1.0</version>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-models-jakarta</artifactId>
+            <version>2.2.9</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>service-map-client</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+</project>

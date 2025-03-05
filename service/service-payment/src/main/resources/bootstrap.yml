@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: service-payment
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        namespace: ${spring.profiles.active}
+      discovery:
+        namespace: ${spring.profiles.active}
+  config:
+    import:
+      - nacos:common-account.yaml
+      - nacos:service-payment.yaml
+
+seata:
+  tx-service-group: payment-tx-group
+  service:
+    vgroup-mapping:
+      payment-tx-group: default
+    grouplist:
+      default: 127.0.0.1:8091
