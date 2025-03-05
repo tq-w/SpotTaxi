@@ -1,5 +1,7 @@
 package com.spot.taxi.map.client;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.model.form.map.OrderServiceLocationForm;
 import com.spot.taxi.model.form.map.SearchNearbyDriverForm;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+@SentinelResource(value = "LocationFeignClient", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @FeignClient(value = "service-map")
 public interface LocationFeignClient {
     @PostMapping("/map/location/updateDriverLocation")

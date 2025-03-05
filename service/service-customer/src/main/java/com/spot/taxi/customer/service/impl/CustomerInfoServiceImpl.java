@@ -96,15 +96,18 @@ public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, Cus
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateWxPhoneNumber(UpdateWxPhoneForm updateWxPhoneForm) {
+        System.out.println(updateWxPhoneForm);
         try {
-            WxMaPhoneNumberInfo phoneNoInfo = wxMaService.getUserService().getPhoneNoInfo(updateWxPhoneForm.getAccessCode());
-            String phone = phoneNoInfo.getPhoneNumber();
+//            WxMaPhoneNumberInfo phoneNoInfo = wxMaService.getUserService().getPhoneNoInfo(updateWxPhoneForm.getAccessCode());
+//            String phone = phoneNoInfo.getPhoneNumber();
+            // todo 个人开发者无获取用户号码权限，模拟获取手机号码
+            String phone = "12345678901";
             Long customerId = updateWxPhoneForm.getCustomerId();
             CustomerInfo customerInfo = customerInfoMapper.selectById(customerId);
             customerInfo.setPhone(phone);
             customerInfoMapper.updateById(customerInfo);
             return true;
-        } catch (WxErrorException e) {
+        } catch (Exception e) {
             log.error("获取手机号码失败", e);
             throw new CustomException(ResultCodeEnum.LOGIN_AUTH);
         }

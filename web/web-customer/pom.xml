@@ -23,7 +23,6 @@
 		</dependency>
 	</dependencies>
 
-
 	<build>
 		<finalName>web-customer</finalName>
 		<plugins>

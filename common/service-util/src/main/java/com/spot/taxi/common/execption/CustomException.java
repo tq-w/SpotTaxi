@@ -39,7 +39,7 @@ public class CustomException extends RuntimeException {
 
     @Override
     public String toString() {
-        return "GuliException{" +
+        return "CustomException{" +
                 "code=" + code +
                 ", message=" + this.getMessage() +
                 '}';

@@ -61,7 +61,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerLoginVo getCustomerInfo(Long customerId) {
-        System.out.println("customerId = " + customerId);
         Result<CustomerLoginVo> customerLoginVoResult = customerInfoFeignClient.getCustomerLoginInfo(customerId);
 
         return customerLoginVoResult.getData();

@@ -1,5 +1,7 @@
 package com.spot.taxi.driver.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.driver.service.MonitorService;
 import com.spot.taxi.model.form.order.OrderMonitorForm;
 import com.spot.taxi.common.result.Result;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "监控接口管理")
 @RestController
 @RequestMapping(value="/monitor")
+@SentinelResource(value = "MonitorController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class MonitorController {
     @Autowired

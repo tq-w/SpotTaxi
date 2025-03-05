@@ -1,5 +1,7 @@
 package com.spot.taxi.dispatch.client;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.model.vo.dispatch.NewOrderTaskVo;
 import com.spot.taxi.model.vo.order.NewOrderDataVo;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-
+@SentinelResource(value = "NewOrderFeignClient", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @FeignClient(value = "service-dispatch")
 public interface NewOrderFeignClient {
     @PostMapping("/dispatch/newOrder/addAndStartTask")

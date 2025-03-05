@@ -1,5 +1,7 @@
 package com.spot.taxi.driver.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.driver.service.CosService;
 import com.spot.taxi.model.vo.driver.CosUploadVo;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "腾讯云cos上传接口管理")
 @RestController
 @RequestMapping(value = "/cos")
+@SentinelResource(value = "CosController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CosController {
     @Autowired

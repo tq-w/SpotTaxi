@@ -1,5 +1,7 @@
 package com.spot.taxi.order.client;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.model.entity.order.OrderInfo;
 import com.spot.taxi.model.form.order.OrderInfoForm;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 
-
+@SentinelResource(value = "OrderInfoFeignClient", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @FeignClient(value = "service-order")
 public interface OrderInfoFeignClient {
     @PostMapping("/order/info/saveOrderInfo")

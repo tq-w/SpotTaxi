@@ -1,5 +1,7 @@
 package com.spot.taxi.driver.client;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.model.vo.driver.CosUploadVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+@SentinelResource(value = "CosFeignClient", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @FeignClient(value = "service-driver")
 public interface CosFeignClient {
     @PostMapping(path = "/driver/cos/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

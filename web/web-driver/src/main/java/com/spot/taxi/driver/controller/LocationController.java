@@ -1,5 +1,7 @@
 package com.spot.taxi.driver.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.login.CheckLoginStatus;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.common.util.AuthContextHolder;
@@ -19,6 +21,7 @@ import java.util.List;
 @Tag(name = "位置API接口管理")
 @RestController
 @RequestMapping(value="/location")
+@SentinelResource(value = "LocationController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class LocationController {
     @Autowired

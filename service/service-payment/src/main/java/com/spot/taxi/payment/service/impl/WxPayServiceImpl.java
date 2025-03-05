@@ -32,6 +32,7 @@ import com.wechat.pay.java.service.payments.jsapi.model.*;
 //import io.seata.spring.annotation.GlobalTransactional;
 import com.wechat.pay.java.service.payments.model.Transaction;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.BeanUtils;
@@ -45,19 +46,14 @@ import java.util.Date;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class WxPayServiceImpl implements WxPayService {
-    @Autowired
-    private PaymentInfoMapper paymentInfoMapper;
-    @Autowired
-    private RSAAutoCertificateConfig rsaAutoCertificateConfig;
-    @Autowired
-    private WxPayV3Properties wxPayV3Properties;
-    @Autowired
-    private RabbitService rabbitService;
-    @Autowired
-    private OrderInfoFeignClient orderInfoFeignClient;
-    @Autowired
-    private DriverAccountFeignClient driverAccountFeignClient;
+    private final PaymentInfoMapper paymentInfoMapper;
+    private final RSAAutoCertificateConfig rsaAutoCertificateConfig;
+    private final WxPayV3Properties wxPayV3Properties;
+    private final RabbitService rabbitService;
+    private final OrderInfoFeignClient orderInfoFeignClient;
+    private final DriverAccountFeignClient driverAccountFeignClient;
 
 
     // 真实调用微信支付

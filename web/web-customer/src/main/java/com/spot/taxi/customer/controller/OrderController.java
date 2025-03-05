@@ -1,5 +1,7 @@
 package com.spot.taxi.customer.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.login.CheckLoginStatus;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.common.util.AuthContextHolder;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "订单API接口管理")
 @RestController
 @RequestMapping("/order")
+@SentinelResource(value = "OrderController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class OrderController {
     @Autowired

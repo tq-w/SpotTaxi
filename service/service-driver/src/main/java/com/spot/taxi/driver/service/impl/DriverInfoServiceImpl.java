@@ -140,7 +140,10 @@ public class DriverInfoServiceImpl extends ServiceImpl<DriverInfoMapper, DriverI
         DriverInfo driverInfo = new DriverInfo();
         driverInfo.setId(driverId);
         BeanUtils.copyProperties(updateDriverAuthInfoForm, driverInfo);
-
+        // 进入待审核状态
+        driverInfo.setAuthStatus(1);
+        // todo完成管理端后取消这行
+        driverInfo.setAuthStatus(2);
         return this.updateById(driverInfo);
     }
 

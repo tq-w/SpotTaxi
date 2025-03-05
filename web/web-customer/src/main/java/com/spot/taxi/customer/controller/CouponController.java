@@ -1,5 +1,7 @@
 package com.spot.taxi.customer.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.login.CheckLoginStatus;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.common.util.AuthContextHolder;
@@ -23,6 +25,7 @@ import java.util.List;
 @Tag(name = "优惠券活动接口管理")
 @RestController
 @RequestMapping(value = "/coupon")
+@SentinelResource(value = "CouponController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CouponController {
     @Autowired

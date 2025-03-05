@@ -1,5 +1,7 @@
 package com.spot.taxi.customer.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.login.CheckLoginStatus;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.common.util.AuthContextHolder;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "客户API接口管理")
 @RestController
 @RequestMapping("/customer")
+@SentinelResource(value = "CustomerController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CustomerController {
     @Autowired
@@ -45,10 +48,9 @@ public class CustomerController {
     @CheckLoginStatus
     @PostMapping("/updateWxPhone")
     public Result updateWxPhone(@RequestBody UpdateWxPhoneForm updateWxPhoneForm) {
+        System.out.println(updateWxPhoneForm);
         updateWxPhoneForm.setCustomerId(AuthContextHolder.getUserId());
         return Result.ok(customerService.updateWxPhoneNumber(updateWxPhoneForm));
-        // 由于没有实现，所以直接返回true
-//        return Result.ok(true);
     }
 }
 

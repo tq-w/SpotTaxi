@@ -1,5 +1,7 @@
 package com.spot.taxi.driver.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.login.CheckLoginStatus;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.common.util.AuthContextHolder;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "司机API接口管理")
 @RestController
 @RequestMapping(value = "/driver")
+@SentinelResource(value = "DriverController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DriverController {
     @Autowired

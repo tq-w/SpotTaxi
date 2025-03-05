@@ -1,5 +1,7 @@
 package com.spot.taxi.driver.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.common.result.Result;
 import com.spot.taxi.driver.service.CosService;
 import com.spot.taxi.driver.service.FileService;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "上传管理接口")
 @RestController
 @RequestMapping("file")
+@SentinelResource(value = "FileController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 public class FileController {
     @Autowired
     private CosService cosService;

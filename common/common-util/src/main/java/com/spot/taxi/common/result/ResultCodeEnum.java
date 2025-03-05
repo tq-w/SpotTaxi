@@ -12,6 +12,7 @@ public enum ResultCodeEnum {
     SUCCESS(200,"成功"),
     FAIL(201, "失败"),
     SERVICE_ERROR(2012, "服务异常"),
+    TRAFFIC_OVERLOAD(2013, "流量过载"),
     DATA_ERROR(204, "数据异常"),
     ILLEGAL_REQUEST(205, "非法请求"),
     REPEAT_SUBMIT(206, "重复提交"),

@@ -1,5 +1,7 @@
 package com.spot.taxi.coupon.client;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.spot.taxi.common.fallbackFactory.SentinelFallback;
 import com.spot.taxi.model.form.coupon.UseCouponForm;
 import com.spot.taxi.model.vo.base.PageVo;
 import com.spot.taxi.model.vo.coupon.AvailableCouponVo;
@@ -16,9 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.math.BigDecimal;
 import java.util.List;
 
-
+@SentinelResource(value = "CouponFeignClient", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @FeignClient(value = "service-coupon")
 public interface CouponFeignClient {
+
     @GetMapping("/coupon/info/findNoReceivePage/{customerId}/{page}/{limit}")
     Result<PageVo<NoReceiveCouponVo>> findNoReceivePage(
             @PathVariable("customerId") Long customerId,
