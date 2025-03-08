@@ -31,6 +31,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,15 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
     private final OrderBillMapper orderBillMapper;
     private final OrderProfitsharingMapper orderProfitsharingMapper;
     private final RabbitService rabbitService;
+    private static final String DECREMENT_SCRIPT =
+            "local key = KEYS[1]\n" +
+                    "local current = tonumber(redis.call('get', key) or 0)\n" +
+                    "if current > 0 then\n" +
+                    "    redis.call('decr', key)\n" +
+                    "    return 0\n" +  // 扣减成功，返回 0（后续需明确处理）
+                    "else\n" +
+                    "    return -1\n" + // 库存不足
+                    "end";
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -87,47 +97,112 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
     @Override
     public Boolean takeNewOrder(Long driverId, Long orderId) {
-        // 1. 原子扣减库存（订单库存初始为1，扣减后为0）
-        Long stock = redisTemplate.opsForValue().decrement(RedisConstant.ORDER_ACCEPT_MARK + orderId);
-        if (stock == null || stock < 0) {
-            System.out.println("订单已被抢走，" + driverId + "抢单" + orderId + "失败");
-            return false;
-        }
+        String redisKey = RedisConstant.ORDER_ACCEPT_MARK + orderId;
+        RLock lock = null;
+        boolean locked = false;
 
-        // 2. 获取分布式锁（防止极端情况下重复操作）
-        RLock lock = redissonClient.getLock(TAKE_NEW_ORDER_LOCK + orderId);
         try {
-            boolean flag = lock.tryLock(TAKE_NEW_ORDER_LOCK_WAIT_TIME, TAKE_NEW_ORDER_LOCK_LEASE_TIME, TimeUnit.SECONDS);
-            if (!flag) {
-                // 补偿：回滚库存（因已扣减成功但未抢到锁）
-                redisTemplate.opsForValue().increment(RedisConstant.ORDER_ACCEPT_MARK + orderId);
+            // 1. 使用 Lua 脚本原子扣减库存（拦截 99% 无效请求）
+            Long scriptResult = redisTemplate.execute(
+                    new DefaultRedisScript<>(DECREMENT_SCRIPT, Long.class),
+                    Collections.singletonList(redisKey)
+            );
+
+            // 库存不足或脚本执行失败
+            if (scriptResult == -1) {
                 return false;
             }
 
-            // 3. 检查订单状态是否已被修改（防止重复处理）
-            OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
-            if (orderInfo != null && orderInfo.getStatus().equals(OrderStatus.WAITING_ACCEPT.getStatus())) {
-                orderInfo.setDriverId(driverId);
-                orderInfo.setStatus(OrderStatus.ACCEPTED.getStatus());
-                orderInfo.setAcceptTime(new Date());
-                if (orderInfoMapper.updateById(orderInfo) == 1) {
-                    return true;
-                }
+            // 2. 获取分布式锁（只有库存扣减成功的请求进入）
+            lock = redissonClient.getLock(TAKE_NEW_ORDER_LOCK + orderId);
+            locked = lock.tryLock(TAKE_NEW_ORDER_LOCK_WAIT_TIME, TAKE_NEW_ORDER_LOCK_LEASE_TIME, TimeUnit.SECONDS);
+
+            if (!locked) {
+                // 补偿库存（异步优化点：可放入队列延迟补偿）
+                redisTemplate.opsForValue().increment(redisKey);
+                return false;
             }
 
-            // 4. 数据库更新失败时回滚库存
-            redisTemplate.opsForValue().increment(RedisConstant.ORDER_ACCEPT_MARK + orderId);
-            return false;
+            // 3. 查询订单状态（幂等性检查）
+            OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+            if (orderInfo == null ||
+                    !OrderStatus.WAITING_ACCEPT.getStatus().equals(orderInfo.getStatus())) {
+                // 订单已被处理，回滚库存
+                redisTemplate.opsForValue().increment(redisKey);
+                return false;
+            }
+
+            // 4. 更新订单状态
+            orderInfo.setDriverId(driverId);
+            orderInfo.setStatus(OrderStatus.ACCEPTED.getStatus());
+            orderInfo.setAcceptTime(new Date());
+
+            if (orderInfoMapper.updateById(orderInfo) != 1) {
+                // 数据库更新失败，回滚库存
+                redisTemplate.opsForValue().increment(redisKey);
+                return false;
+            }
+
+            return true;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            // 补偿库存
+            redisTemplate.opsForValue().increment(redisKey);
+            throw new CustomException(ResultCodeEnum.TAKE_NEW_ORDER_FAIL);
         } catch (Exception e) {
-            // 异常时回滚库存
-            redisTemplate.opsForValue().increment(RedisConstant.ORDER_ACCEPT_MARK + orderId);
+            // 补偿库存
+            redisTemplate.opsForValue().increment(redisKey);
             throw new CustomException(ResultCodeEnum.TAKE_NEW_ORDER_FAIL);
         } finally {
-            if (lock.isHeldByCurrentThread()) {
+            if (lock != null && locked && lock.isHeldByCurrentThread()) {
                 lock.unlock();
             }
         }
     }
+
+//    @Override
+//    public Boolean takeNewOrder(Long driverId, Long orderId) {
+//        // 1. 原子扣减库存（订单库存初始为1，扣减后为0）todo这里可能会出现两个线程都没通过的情况
+//        Long stock = redisTemplate.opsForValue().decrement(RedisConstant.ORDER_ACCEPT_MARK + orderId);
+//        if (stock == null || stock < 0) {
+//            System.out.println("订单已被抢走，" + driverId + "抢单" + orderId + "失败");
+//            return false;
+//        }
+//
+//        // 2. 获取分布式锁（防止极端情况下重复操作）
+//        RLock lock = redissonClient.getLock(TAKE_NEW_ORDER_LOCK + orderId);
+//        try {
+//            boolean flag = lock.tryLock(TAKE_NEW_ORDER_LOCK_WAIT_TIME, TAKE_NEW_ORDER_LOCK_LEASE_TIME, TimeUnit.SECONDS);
+//            if (!flag) {
+//                // 补偿：回滚库存（因已扣减成功但未抢到锁）
+//                redisTemplate.opsForValue().increment(RedisConstant.ORDER_ACCEPT_MARK + orderId);
+//                return false;
+//            }
+//
+//            // 3. 检查订单状态是否已被修改（防止重复处理）
+//            OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+//            if (orderInfo != null && orderInfo.getStatus().equals(OrderStatus.WAITING_ACCEPT.getStatus())) {
+//                orderInfo.setDriverId(driverId);
+//                orderInfo.setStatus(OrderStatus.ACCEPTED.getStatus());
+//                orderInfo.setAcceptTime(new Date());
+//                if (orderInfoMapper.updateById(orderInfo) == 1) {
+//                    return true;
+//                }
+//            }
+//
+//            // 4. 数据库更新失败时回滚库存
+//            redisTemplate.opsForValue().increment(RedisConstant.ORDER_ACCEPT_MARK + orderId);
+//            return false;
+//        } catch (Exception e) {
+//            // 异常时回滚库存
+//            redisTemplate.opsForValue().increment(RedisConstant.ORDER_ACCEPT_MARK + orderId);
+//            throw new CustomException(ResultCodeEnum.TAKE_NEW_ORDER_FAIL);
+//        } finally {
+//            if (lock.isHeldByCurrentThread()) {
+//                lock.unlock();
+//            }
+//        }
+//    }
 
 
 //    @Override
