@@ -5,7 +5,7 @@ package com.spot.taxi.common.util;
  */
 public class AuthContextHolder {
 
-    private static ThreadLocal<Long> userId = new ThreadLocal<Long>();
+    private static final ThreadLocal<Long> userId = new ThreadLocal<>();
 
     public static void setUserId(Long _userId) {
         userId.set(_userId);

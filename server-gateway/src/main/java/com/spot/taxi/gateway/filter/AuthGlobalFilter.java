@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         return chain.filter(exchange);

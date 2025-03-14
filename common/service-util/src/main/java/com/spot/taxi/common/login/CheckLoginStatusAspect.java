@@ -5,6 +5,7 @@ import com.spot.taxi.common.execption.CustomException;
 import com.spot.taxi.common.result.ResultCodeEnum;
 import com.spot.taxi.common.util.AuthContextHolder;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,10 +21,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Slf4j
 @Component
 @Aspect
+@RequiredArgsConstructor
 public class CheckLoginStatusAspect {
-
-    @Autowired
-    private RedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Around("execution(* com.spot.taxi.*.controller.*.*(..)) && @annotation(CheckLoginStatus)")
     public Object Login(ProceedingJoinPoint proceedingJoinPoint, CheckLoginStatus CheckLoginStatus) throws Throwable {
@@ -40,7 +40,7 @@ public class CheckLoginStatusAspect {
             throw new CustomException(ResultCodeEnum.LOGIN_AUTH);
         }
 
-        String userId = (String) redisTemplate.opsForValue().get(RedisConstant.USER_LOGIN_KEY_PREFIX + token);
+        String userId = redisTemplate.opsForValue().get(RedisConstant.USER_LOGIN_KEY_PREFIX + token);
 
         if (StringUtils.hasText(userId)) {
             AuthContextHolder.setUserId(Long.valueOf(userId));
