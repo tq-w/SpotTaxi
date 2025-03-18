@@ -3,8 +3,9 @@ package com.spot.taxi.common.service;
 
 import com.alibaba.fastjson2.JSON;
 import com.spot.taxi.common.entity.RebbitMqCorrelationData;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,10 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 public class RabbitService {
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    private final RabbitTemplate rabbitTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     /**
      * 发送消息

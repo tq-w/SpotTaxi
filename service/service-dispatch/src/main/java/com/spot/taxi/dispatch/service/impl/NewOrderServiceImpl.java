@@ -17,9 +17,10 @@ import com.spot.taxi.model.vo.map.NearByDriverVo;
 import com.spot.taxi.model.vo.order.NewOrderDataVo;
 import com.spot.taxi.order.client.OrderInfoFeignClient;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,19 +31,19 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class NewOrderServiceImpl implements NewOrderService {
-
-    @Autowired
-    private OrderJobMapper orderJobMapper;
-    @Autowired
-    private XxlJobClient xxlJobClient;
-    @Autowired
-    private OrderInfoFeignClient orderInfoFeignClient;
-    @Autowired
-    private LocationFeignClient locationFeignClient;
-    @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
+    
+    private final OrderJobMapper orderJobMapper;
+    
+    private final XxlJobClient xxlJobClient;
+    
+    private final OrderInfoFeignClient orderInfoFeignClient;
+    
+    private final LocationFeignClient locationFeignClient;
+    
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     //创建并启动任务调度方法
     @Transactional(rollbackFor = Exception.class)

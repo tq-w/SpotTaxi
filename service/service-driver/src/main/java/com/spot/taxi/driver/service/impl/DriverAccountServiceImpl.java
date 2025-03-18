@@ -8,21 +8,23 @@ import com.spot.taxi.model.entity.driver.DriverAccount;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.spot.taxi.model.entity.driver.DriverAccountDetail;
 import com.spot.taxi.model.form.driver.TransferForm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DriverAccountServiceImpl extends ServiceImpl<DriverAccountMapper, DriverAccount> implements DriverAccountService {
 
-    @Autowired
-    private DriverAccountDetailMapper driverAccountDetailMapper;
-    @Autowired
-    private DriverAccountMapper driverAccountMapper;
+    
+    private final DriverAccountDetailMapper driverAccountDetailMapper;
+    
+    private final DriverAccountMapper driverAccountMapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override

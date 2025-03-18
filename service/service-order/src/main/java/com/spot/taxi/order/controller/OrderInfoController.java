@@ -12,7 +12,8 @@ import com.spot.taxi.order.service.OrderInfoService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -20,11 +21,12 @@ import java.math.BigDecimal;
 
 @Tag(name = "订单API接口管理")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/order/info")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class OrderInfoController {
-    @Autowired
-    private OrderInfoService orderInfoService;
+
+    private final OrderInfoService orderInfoService;
 
     @Operation(summary = "保存订单信息")
     @PostMapping("/saveOrderInfo")

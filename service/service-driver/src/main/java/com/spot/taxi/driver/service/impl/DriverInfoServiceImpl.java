@@ -24,11 +24,12 @@ import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.iai.v20200303.IaiClient;
 import com.tencentcloudapi.iai.v20200303.models.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -38,24 +39,25 @@ import java.util.Date;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DriverInfoServiceImpl extends ServiceImpl<DriverInfoMapper, DriverInfo> implements DriverInfoService {
-    @Autowired
-    private WxMaService wxMaService;
-    @Autowired
-    private DriverInfoMapper driverInfoMapper;
-    @Autowired
-    private DriverSetMapper driverSetMapper;
-    @Autowired
-    private DriverAccountMapper driverAccountMapper;
-    @Autowired
-    private DriverLoginLogMapper driverLoginLogMapper;
-    @Autowired
-    private CosService cosService;
-    @Autowired
-    private TencentCloudProperties tencentCloudProperties;
-    @Autowired
-    private DriverFaceRecognitionMapper driverFaceRecognitionMapper;
+    
+    private final WxMaService wxMaService;
+    
+    private final DriverInfoMapper driverInfoMapper;
+    
+    private final DriverSetMapper driverSetMapper;
+    
+    private final DriverAccountMapper driverAccountMapper;
+    
+    private final DriverLoginLogMapper driverLoginLogMapper;
+    
+    private final CosService cosService;
+    
+    private final TencentCloudProperties tencentCloudProperties;
+    
+    private final DriverFaceRecognitionMapper driverFaceRecognitionMapper;
 
     @Transactional(rollbackFor = Exception.class)
     @Override

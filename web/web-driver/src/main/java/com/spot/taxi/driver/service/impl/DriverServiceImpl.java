@@ -12,8 +12,9 @@ import com.spot.taxi.model.form.driver.DriverFaceModelForm;
 import com.spot.taxi.model.form.driver.UpdateDriverAuthInfoForm;
 import com.spot.taxi.model.vo.driver.DriverAuthInfoVo;
 import com.spot.taxi.model.vo.driver.DriverLoginVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,16 +23,17 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DriverServiceImpl implements DriverService {
-    @Autowired
-    private DriverInfoFeignClient driverInfoFeignClient;
-    @Autowired
-    private RedisTemplate redisTemplate;
-    @Autowired
-    private LocationFeignClient locationFeignClient;
-    @Autowired
-    private NewOrderFeignClient newOrderFeignClient;
+
+    private final DriverInfoFeignClient driverInfoFeignClient;
+
+    private final RedisTemplate redisTemplate;
+
+    private final LocationFeignClient locationFeignClient;
+
+    private final NewOrderFeignClient newOrderFeignClient;
 
     @Override
     public String login(String accessCode) {

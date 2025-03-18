@@ -18,11 +18,12 @@ import com.spot.taxi.model.vo.coupon.AvailableCouponVo;
 import com.spot.taxi.model.vo.coupon.NoReceiveCouponVo;
 import com.spot.taxi.model.vo.coupon.NoUseCouponVo;
 import com.spot.taxi.model.vo.coupon.UsedCouponVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -35,18 +36,12 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CouponInfoServiceImpl extends ServiceImpl<CouponInfoMapper, CouponInfo> implements CouponInfoService {
-    @Autowired
-    private CustomerCouponMapper customerCouponMapper;
-    @Autowired
-    private CouponInfoMapper couponInfoMapper;
-    @Autowired
-    private RedissonClient redissonClient;
-
-    public CouponInfoServiceImpl(CustomerCouponMapper customerCouponMapper) {
-        this.customerCouponMapper = customerCouponMapper;
-    }
+    private final CustomerCouponMapper customerCouponMapper;
+    private final CouponInfoMapper couponInfoMapper;
+    private final RedissonClient redissonClient;
 
     @Override
     public PageVo<NoReceiveCouponVo> findNoReceivePage(Page<CouponInfo> pageParam, Long customerId) {

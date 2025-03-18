@@ -5,16 +5,18 @@ import com.spot.taxi.dispatch.service.NewOrderService;
 import com.spot.taxi.model.entity.dispatch.XxlJobLog;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JobHandler {
-    @Autowired
-    private NewOrderService newOrderService;
+    
+    private final NewOrderService newOrderService;
 
-    @Autowired
-    private XxlJobLogMapper xxlJobLogMapper;
+    
+    private final XxlJobLogMapper xxlJobLogMapper;
 
 
     @XxlJob("newOrderTaskHandler")

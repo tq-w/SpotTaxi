@@ -3,6 +3,7 @@ package com.spot.taxi.order.receiver;
 import com.spot.taxi.common.constant.MqConst;
 import com.spot.taxi.order.service.OrderInfoService;
 import com.rabbitmq.client.Channel;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -10,16 +11,15 @@ import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ConfirmReceiver {
-    @Autowired
-    private OrderInfoService orderInfoService;
+    private final OrderInfoService orderInfoService;
 
     @SneakyThrows
     @RabbitListener(bindings = @QueueBinding(

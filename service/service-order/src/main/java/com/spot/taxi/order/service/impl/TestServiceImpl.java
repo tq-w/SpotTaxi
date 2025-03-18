@@ -2,20 +2,21 @@ package com.spot.taxi.order.service.impl;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.spot.taxi.order.service.TestService;
+import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class TestServiceImpl implements TestService {
-    @Autowired
-    private StringRedisTemplate redisTemplate;
 
-    @Autowired
-    private RedissonClient redissonClient;
+    private final StringRedisTemplate redisTemplate;
+
+    private final RedissonClient redissonClient;
 
     @Override
     public void testLock() {

@@ -21,10 +21,11 @@ import com.spot.taxi.payment.mapper.PaymentInfoMapper;
 import com.spot.taxi.payment.service.WxPayService;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -38,21 +39,22 @@ import java.util.concurrent.TimeUnit;
 @Primary
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class WxPayServiceImplMock implements WxPayService {
-    @Autowired
-    private PaymentInfoMapper paymentInfoMapper;
-    @Autowired
-    private RSAAutoCertificateConfig rsaAutoCertificateConfig;
-    @Autowired
-    private WxPayV3Properties wxPayV3Properties;
-    @Autowired
-    private RabbitService rabbitService;
-    @Autowired
-    private OrderInfoFeignClient orderInfoFeignClient;
-    @Autowired
-    private DriverAccountFeignClient driverAccountFeignClient;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    
+    private final PaymentInfoMapper paymentInfoMapper;
+    
+    private final RSAAutoCertificateConfig rsaAutoCertificateConfig;
+    
+    private final WxPayV3Properties wxPayV3Properties;
+    
+    private final RabbitService rabbitService;
+    
+    private final OrderInfoFeignClient orderInfoFeignClient;
+    
+    private final DriverAccountFeignClient driverAccountFeignClient;
+    
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Override
     public WxPrepayVo createWxPayment(PaymentInfoForm paymentInfoForm) {

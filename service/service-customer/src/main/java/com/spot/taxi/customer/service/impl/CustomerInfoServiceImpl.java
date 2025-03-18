@@ -14,10 +14,11 @@ import com.spot.taxi.model.form.customer.UpdateWxPhoneForm;
 import com.spot.taxi.model.vo.customer.CustomerLoginVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,21 +29,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CustomerInfoServiceImpl extends ServiceImpl<CustomerInfoMapper, CustomerInfo> implements CustomerInfoService {
 
-    @Autowired
-    private WxMaService wxMaService;
+    private final WxMaService wxMaService;
 
-    @Autowired
-    private CustomerInfoMapper customerInfoMapper;
+    private final CustomerInfoMapper customerInfoMapper;
 
-    @Autowired
-    private CustomerLoginLogMapper customerLoginLogMapper;
+    private final CustomerLoginLogMapper customerLoginLogMapper;
 
-    @Autowired
     @Qualifier("logThreadPool")
-    private ThreadPoolExecutor logThreadPool;
+    private final ThreadPoolExecutor logThreadPool;
 
     @Transactional(rollbackFor = Exception.class)
     @Override

@@ -5,22 +5,24 @@ import com.spot.taxi.model.form.rules.FeeRuleRequestForm;
 import com.spot.taxi.model.vo.rules.FeeRuleResponse;
 import com.spot.taxi.model.vo.rules.FeeRuleResponseVo;
 import com.spot.taxi.rules.service.FeeRuleService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class FeeRuleServiceImpl implements FeeRuleService {
-    @Autowired
-    private KieContainer kieContainer;
+
+    private final KieContainer kieContainer;
 
     @Override
     public FeeRuleResponseVo calculateOrderFee(FeeRuleRequestForm feeRuleRequestForm) {

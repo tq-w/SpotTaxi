@@ -7,8 +7,9 @@ import com.spot.taxi.payment.service.WxPayService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -19,9 +20,10 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("payment/wxPay")
 @Slf4j
+@RequiredArgsConstructor
 public class WxPayController {
-    @Autowired
-    private WxPayService wxPayService;
+    
+    private final WxPayService wxPayService;
 
     @Operation(summary = "创建微信支付")
     @PostMapping("/createWxPayment")

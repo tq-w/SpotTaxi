@@ -17,10 +17,11 @@ import com.tencentcloudapi.ocr.v20181119.models.DriverLicenseOCRRequest;
 import com.tencentcloudapi.ocr.v20181119.models.DriverLicenseOCRResponse;
 import com.tencentcloudapi.ocr.v20181119.models.IDCardOCRRequest;
 import com.tencentcloudapi.ocr.v20181119.models.IDCardOCRResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.joda.time.format.DateTimeFormat;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,13 +29,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class OcrServiceImpl implements OcrService {
-    @Autowired
-    private TencentCloudProperties tencentCloudProperties;
+    
+    private final TencentCloudProperties tencentCloudProperties;
 
-    @Autowired
-    private CosService cosService;
+    
+    private final CosService cosService;
 
 
     @Override

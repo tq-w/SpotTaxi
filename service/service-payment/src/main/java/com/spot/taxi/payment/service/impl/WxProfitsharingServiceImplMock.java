@@ -16,8 +16,9 @@ import com.spot.taxi.payment.mapper.ProfitsharingInfoMapper;
 import com.spot.taxi.payment.service.WxProfitsharingService;
 import com.wechat.pay.java.core.RSAAutoCertificateConfig;
 import com.wechat.pay.java.service.profitsharing.model.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,21 +28,18 @@ import java.util.Random;
 @Primary
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class WxProfitsharingServiceImplMock implements WxProfitsharingService {
-    @Autowired
-    private PaymentInfoMapper paymentInfoMapper;
-
-    @Autowired
-    private ProfitsharingInfoMapper profitsharingInfoMapper;
-
-    @Autowired
-    private WxPayV3Properties wxPayV3Properties;
-
-    @Autowired
-    private RSAAutoCertificateConfig rsaAutoCertificateConfig;
-
-    @Autowired
-    private RabbitService rabbitService;
+    
+    private final PaymentInfoMapper paymentInfoMapper;
+    
+    private final ProfitsharingInfoMapper profitsharingInfoMapper;
+    
+    private final WxPayV3Properties wxPayV3Properties;
+    
+    private final RSAAutoCertificateConfig rsaAutoCertificateConfig;
+    
+    private final RabbitService rabbitService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override

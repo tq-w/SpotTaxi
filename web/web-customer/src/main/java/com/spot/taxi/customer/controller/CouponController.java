@@ -13,7 +13,8 @@ import com.spot.taxi.model.vo.coupon.NoUseCouponVo;
 import com.spot.taxi.model.vo.coupon.UsedCouponVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,11 +26,12 @@ import java.util.List;
 @Tag(name = "优惠券活动接口管理")
 @RestController
 @RequestMapping(value = "/coupon")
+@RequiredArgsConstructor
 @SentinelResource(value = "CouponController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CouponController {
-    @Autowired
-    private CouponService couponService;
+
+    private final CouponService couponService;
 
     @Operation(summary = "查询未领取优惠券分页列表")
     @CheckLoginStatus

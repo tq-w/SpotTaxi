@@ -5,8 +5,9 @@ import com.spot.taxi.model.form.rules.FeeRuleRequestForm;
 import com.spot.taxi.model.vo.rules.FeeRuleResponseVo;
 import com.spot.taxi.rules.service.FeeRuleService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/rules/fee")
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class FeeRuleController {
 
-    @Autowired
-    private FeeRuleService feeRuleService;
+    private final FeeRuleService feeRuleService;
 
     @Operation(summary = "计算订单费用")
     @PostMapping("/calculateOrderFee")

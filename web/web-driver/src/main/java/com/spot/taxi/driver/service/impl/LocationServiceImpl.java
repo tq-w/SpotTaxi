@@ -10,20 +10,22 @@ import com.spot.taxi.model.entity.driver.DriverSet;
 import com.spot.taxi.model.form.map.OrderServiceLocationForm;
 import com.spot.taxi.model.form.map.UpdateDriverLocationForm;
 import com.spot.taxi.model.form.map.UpdateOrderLocationForm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class LocationServiceImpl implements LocationService {
-    @Autowired
-    private LocationFeignClient locationFeignClient;
-    @Autowired
-    private DriverInfoFeignClient driverInfoFeignClient;
+
+    private final LocationFeignClient locationFeignClient;
+
+    private final DriverInfoFeignClient driverInfoFeignClient;
 
     @Override
     public Boolean updateDriverLocation(UpdateDriverLocationForm updateDriverLocationForm) {

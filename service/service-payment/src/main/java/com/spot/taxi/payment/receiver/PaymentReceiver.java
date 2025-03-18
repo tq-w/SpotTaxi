@@ -4,11 +4,12 @@ import com.alibaba.fastjson2.JSONObject;
 import com.spot.taxi.model.form.payment.ProfitsharingForm;
 import com.spot.taxi.payment.service.WxPayService;
 import com.spot.taxi.payment.service.WxProfitsharingService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 import com.spot.taxi.common.constant.MqConst;
 import com.rabbitmq.client.Channel;
@@ -20,11 +21,12 @@ import java.io.IOException;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class PaymentReceiver {
-    @Autowired
-    private WxPayService wxPayService;
-    @Autowired
-    WxProfitsharingService wxProfitsharingService;
+    
+    private final WxPayService wxPayService;
+
+    private final WxProfitsharingService wxProfitsharingService;
 
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = MqConst.QUEUE_PAY_SUCCESS,durable = "true"),
@@ -34,7 +36,6 @@ public class PaymentReceiver {
     public void paySuccess(String orderNo, Message message, Channel channel) {
         wxPayService.handleOrder(orderNo);
     }
-
 
     // 分账消息
     @RabbitListener(queues = MqConst.QUEUE_PROFITSHARING)

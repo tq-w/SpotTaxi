@@ -11,8 +11,9 @@ import com.spot.taxi.model.vo.map.OrderLocationVo;
 import com.spot.taxi.model.vo.map.OrderServiceLastLocationVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -22,10 +23,11 @@ import java.util.List;
 @Tag(name = "位置API接口管理")
 @RestController
 @RequestMapping("/map/location")
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class LocationController {
-    @Autowired
-    private LocationService locationService;
+
+    private final LocationService locationService;
 
     //司机开启接单，更新司机位置信息
     @Operation(summary = "开启接单服务：更新司机经纬度位置")

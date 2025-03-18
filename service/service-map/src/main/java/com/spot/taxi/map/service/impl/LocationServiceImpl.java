@@ -17,10 +17,11 @@ import com.spot.taxi.model.form.map.UpdateOrderLocationForm;
 import com.spot.taxi.model.vo.map.NearByDriverVo;
 import com.spot.taxi.model.vo.map.OrderLocationVo;
 import com.spot.taxi.model.vo.map.OrderServiceLastLocationVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.*;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,16 +42,17 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class LocationServiceImpl implements LocationService {
-    @Autowired
-    private RedisTemplate redisTemplate;
-    @Autowired
-    private DriverInfoFeignClient driverInfoFeignClient;
-    @Autowired
-    private OrderServiceLocationRepository orderServiceLocationRepository;
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    
+    private final RedisTemplate redisTemplate;
+    
+    private final DriverInfoFeignClient driverInfoFeignClient;
+    
+    private final OrderServiceLocationRepository orderServiceLocationRepository;
+    
+    private final MongoTemplate mongoTemplate;
 
     @Override
     public Boolean updateDriverLocation(UpdateDriverLocationForm updateDriverLocationForm) {

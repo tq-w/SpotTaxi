@@ -8,8 +8,9 @@ import com.spot.taxi.customer.client.CustomerInfoFeignClient;
 import com.spot.taxi.customer.service.CustomerService;
 import com.spot.taxi.model.form.customer.UpdateWxPhoneForm;
 import com.spot.taxi.model.vo.customer.CustomerLoginVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,14 +20,13 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CustomerServiceImpl implements CustomerService {
-    @Autowired
-    private CustomerInfoFeignClient customerInfoFeignClient;
-    @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
 
+    private final CustomerInfoFeignClient customerInfoFeignClient;
 
+    private final RedisTemplate<Object, Object> redisTemplate;
 
     @Override
     public String wxLogin(String accessCode) {

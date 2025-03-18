@@ -27,11 +27,12 @@ import com.spot.taxi.order.client.OrderInfoFeignClient;
 import com.spot.taxi.rules.client.FeeRuleFeignClient;
 import com.spot.taxi.rules.client.ProfitsharingRuleFeignClient;
 import com.spot.taxi.rules.client.RewardRuleFeignClient;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -43,23 +44,24 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private OrderInfoFeignClient orderInfoFeignClient;
-    @Autowired
-    private NewOrderFeignClient newOrderFeignClient;
-    @Autowired
-    private MapFeignClient mapFeignClient;
-    @Autowired
-    private LocationFeignClient locationFeignClient;
-    @Autowired
-    private FeeRuleFeignClient feeRuleFeignClient;
-    @Autowired
-    private RewardRuleFeignClient rewardRuleFeignClient;
-    @Autowired
-    private ProfitsharingRuleFeignClient profitsharingRuleFeignClient;
-    @Autowired
+
+    private final OrderInfoFeignClient orderInfoFeignClient;
+
+    private final NewOrderFeignClient newOrderFeignClient;
+
+    private final MapFeignClient mapFeignClient;
+
+    private final LocationFeignClient locationFeignClient;
+
+    private final FeeRuleFeignClient feeRuleFeignClient;
+
+    private final RewardRuleFeignClient rewardRuleFeignClient;
+
+    private final ProfitsharingRuleFeignClient profitsharingRuleFeignClient;
+
     @Qualifier("endOrderThreadPool")
     private ThreadPoolExecutor orderThreadPool;
 

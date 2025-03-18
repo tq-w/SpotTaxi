@@ -8,20 +8,21 @@ import com.spot.taxi.model.vo.rules.ProfitsharingRuleResponseVo;
 import com.spot.taxi.rules.mapper.ProfitsharingRuleMapper;
 import com.spot.taxi.rules.service.ProfitsharingRuleService;
 import com.spot.taxi.rules.utils.DroolsHelper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ProfitsharingRuleServiceImpl implements ProfitsharingRuleService {
     private static final String RULES_PROFITSHARING_RULES_DRL = "rules/ProfitsharingRule.drl";
 
-    @Autowired
-    private ProfitsharingRuleMapper rewardRuleMapper;
+    private final ProfitsharingRuleMapper rewardRuleMapper;
 
     @Override
     public ProfitsharingRuleResponseVo calculateOrderProfitsharingFee(ProfitsharingRuleRequestForm profitsharingRuleRequestForm) {

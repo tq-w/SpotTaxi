@@ -7,21 +7,23 @@ import com.spot.taxi.model.entity.order.OrderMonitorRecord;
 import com.spot.taxi.model.form.order.OrderMonitorForm;
 import com.spot.taxi.model.vo.order.TextAuditingVo;
 import com.spot.taxi.order.client.OrderMonitorFeignClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class MonitorServiceImpl implements MonitorService {
-    @Autowired
-    private FileService fileService;
-    @Autowired
-    private OrderMonitorFeignClient orderMonitorFeignClient;
-    @Autowired
-    private CiFeignClient ciFeignClient;
+
+    private final FileService fileService;
+
+    private final OrderMonitorFeignClient orderMonitorFeignClient;
+
+    private final CiFeignClient ciFeignClient;
 
     @Override
     public Boolean upload(MultipartFile file, OrderMonitorForm orderMonitorForm) {

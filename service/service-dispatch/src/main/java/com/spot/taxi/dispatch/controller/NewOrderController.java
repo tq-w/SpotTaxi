@@ -6,8 +6,9 @@ import com.spot.taxi.model.vo.dispatch.NewOrderTaskVo;
 import com.spot.taxi.model.vo.order.NewOrderDataVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,11 +16,12 @@ import java.util.List;
 @Slf4j
 @Tag(name = "司机新订单接口管理")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/dispatch/newOrder")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class NewOrderController {
-    @Autowired
-    private NewOrderService newOrderService;
+    
+    private final NewOrderService newOrderService;
     //创建并启动任务调度方法
     @Operation(summary = "添加并开始新订单任务调度")
     @PostMapping("/addAndStartTask")

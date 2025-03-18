@@ -6,24 +6,24 @@ import com.spot.taxi.common.result.ResultCodeEnum;
 import com.spot.taxi.dispatch.xxl.config.XxlJobClientConfig;
 import com.spot.taxi.dispatch.xxl.feign.XxlJobFeignClient;
 import com.spot.taxi.model.entity.dispatch.XxlJobInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class XxlJobClient {
-    @Autowired
-    private XxlJobClientConfig xxlJobClientConfig;
+    
+    private final XxlJobClientConfig xxlJobClientConfig;
+    
+    private final XxlJobFeignClient xxlJobFeignClient;
 
-    @Autowired
-    private XxlJobFeignClient xxlJobFeignClient;
-
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @SneakyThrows
     public Long addJob(String executorHandler, String param, String corn, String desc){

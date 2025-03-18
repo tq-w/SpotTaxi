@@ -10,17 +10,19 @@ import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.model.ciModel.auditing.*;
 import com.qcloud.cos.region.Region;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CiServiceImpl implements CiService {
-    @Autowired
-    private TencentCloudProperties tencentCloudProperties;
+    
+    private final TencentCloudProperties tencentCloudProperties;
 
     @Override
     public Boolean imageAuditing(String path) {

@@ -37,9 +37,10 @@ import com.spot.taxi.model.vo.payment.WxPrepayVo;
 import com.spot.taxi.model.vo.rules.FeeRuleResponseVo;
 import com.spot.taxi.order.client.OrderInfoFeignClient;
 import com.spot.taxi.rules.client.FeeRuleFeignClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -48,26 +49,27 @@ import java.util.Objects;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private MapFeignClient mapFeignClient;
-    @Autowired
-    private FeeRuleFeignClient feeRuleFeignClient;
-    @Autowired
-    private OrderInfoFeignClient orderInfoFeignClient;
-    @Autowired
-    private NewOrderFeignClient newOrderFeignClient;
-    @Autowired
-    private DriverInfoFeignClient driverInfoFeignClient;
-    @Autowired
-    private LocationFeignClient locationFeignClient;
-    @Autowired
-    private CustomerInfoFeignClient customerInfoFeignClient;
-    @Autowired
-    private WxPayFeignClient wxPayFeignClient;
-    @Autowired
-    private CouponFeignClient couponFeignClient;
+    
+    private final MapFeignClient mapFeignClient;
+    
+    private final FeeRuleFeignClient feeRuleFeignClient;
+    
+    private final OrderInfoFeignClient orderInfoFeignClient;
+    
+    private final NewOrderFeignClient newOrderFeignClient;
+    
+    private final DriverInfoFeignClient driverInfoFeignClient;
+    
+    private final LocationFeignClient locationFeignClient;
+    
+    private final CustomerInfoFeignClient customerInfoFeignClient;
+    
+    private final WxPayFeignClient wxPayFeignClient;
+    
+    private final CouponFeignClient couponFeignClient;
 
     @Override
     public ExpectOrderVo expectOrder(ExpectOrderForm expectOrderForm) {

@@ -11,8 +11,9 @@ import com.spot.taxi.model.form.map.UpdateDriverLocationForm;
 import com.spot.taxi.model.form.map.UpdateOrderLocationForm;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +22,12 @@ import java.util.List;
 @Tag(name = "位置API接口管理")
 @RestController
 @RequestMapping(value="/location")
+@RequiredArgsConstructor
 @SentinelResource(value = "LocationController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class LocationController {
-    @Autowired
-    private LocationService locationService;
+
+    private final LocationService locationService;
 
     @Operation(summary = "开启接单服务：更新司机经纬度位置")
     @CheckLoginStatus

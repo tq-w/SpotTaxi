@@ -11,7 +11,8 @@ import com.spot.taxi.model.vo.coupon.NoUseCouponVo;
 import com.spot.taxi.model.vo.coupon.UsedCouponVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -21,11 +22,12 @@ import java.util.List;
 
 @Tag(name = "优惠券活动接口管理")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/coupon/info")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CouponInfoController {
-    @Autowired
-    private CouponInfoService couponInfoService;
+    
+    private final CouponInfoService couponInfoService;
 
     @Operation(summary = "查询未领取优惠券分页列表")
     @GetMapping("findNoReceivePage/{customerId}/{page}/{limit}")

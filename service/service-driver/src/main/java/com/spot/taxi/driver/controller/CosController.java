@@ -5,8 +5,9 @@ import com.spot.taxi.driver.service.CosService;
 import com.spot.taxi.model.vo.driver.CosUploadVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,10 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "腾讯云cos上传接口管理")
 @RestController
 @RequestMapping(value = "/driver/cos")
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CosController {
-    @Autowired
-    private CosService cosService;
+    
+    private final CosService cosService;
 
     @Operation(summary = "上传")
     @PostMapping("/upload")

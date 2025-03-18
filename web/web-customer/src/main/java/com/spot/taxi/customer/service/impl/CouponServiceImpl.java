@@ -9,20 +9,22 @@ import com.spot.taxi.model.vo.coupon.NoUseCouponVo;
 import com.spot.taxi.model.vo.coupon.UsedCouponVo;
 import com.spot.taxi.model.vo.order.OrderBillVo;
 import com.spot.taxi.order.client.OrderInfoFeignClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CouponServiceImpl implements CouponService {
-    @Autowired
-    private CouponFeignClient couponFeignClient;
-    @Autowired
-    private OrderInfoFeignClient orderInfoFeignClient;
+
+    private final CouponFeignClient couponFeignClient;
+
+    private final OrderInfoFeignClient orderInfoFeignClient;
 
     @Override
     public PageVo<NoReceiveCouponVo> findNoReceivePage(Long customerId, Long page, Long limit) {

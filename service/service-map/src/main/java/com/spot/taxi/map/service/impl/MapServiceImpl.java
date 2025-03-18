@@ -7,8 +7,9 @@ import com.spot.taxi.common.result.ResultCodeEnum;
 import com.spot.taxi.map.service.MapService;
 import com.spot.taxi.model.form.map.CalculateDrivingLineForm;
 import com.spot.taxi.model.vo.map.DrivingLineVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,10 +21,11 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class MapServiceImpl implements MapService {
-    @Autowired
-    private RestTemplate restTemplate;
+
+    private final RestTemplate restTemplate;
 
     @Value("${tencent.map.key}")
     private String key;

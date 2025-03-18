@@ -7,8 +7,9 @@ import com.spot.taxi.model.form.order.OrderMonitorForm;
 import com.spot.taxi.common.result.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "监控接口管理")
 @RestController
 @RequestMapping(value="/monitor")
+@RequiredArgsConstructor
 @SentinelResource(value = "MonitorController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class MonitorController {
-    @Autowired
-    private MonitorService monitorService;
+
+    private final MonitorService monitorService;
 
     @Operation(summary = "上传录音")
     @PostMapping("/upload")

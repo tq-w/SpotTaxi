@@ -6,18 +6,19 @@ import com.spot.taxi.model.entity.customer.CustomerInfo;
 import com.spot.taxi.model.form.customer.UpdateWxPhoneForm;
 import com.spot.taxi.model.vo.customer.CustomerLoginVo;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/customer/info")
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CustomerInfoController {
 
-	@Autowired
-	private CustomerInfoService customerInfoService;
+	private final CustomerInfoService customerInfoService;
 
 	@Operation(summary = "获取客户登录信息")
 	@GetMapping("/getCustomerLoginInfo/{customerId}")

@@ -12,19 +12,21 @@ import com.spot.taxi.model.vo.driver.DriverAuthInfoVo;
 import com.spot.taxi.model.vo.driver.DriverLoginVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Tag(name = "司机API接口管理")
 @RestController
 @RequestMapping(value = "/driver")
+@RequiredArgsConstructor
 @SentinelResource(value = "DriverController", blockHandlerClass = SentinelFallback.class, blockHandler = "defaultBlockHandler")
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DriverController {
-    @Autowired
-    private DriverService driverService;
+
+    private final DriverService driverService;
 
     @Operation(summary = "小程序授权登录")
     @GetMapping("/login/{code}")

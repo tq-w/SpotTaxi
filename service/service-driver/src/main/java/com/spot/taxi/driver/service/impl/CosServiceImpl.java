@@ -14,9 +14,10 @@ import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.DateTime;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,13 +29,13 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CosServiceImpl implements CosService {
 
-    @Autowired
-    private TencentCloudProperties tencentCloudProperties;
-    @Autowired
-    private CiService ciService;
+    private final TencentCloudProperties tencentCloudProperties;
+    
+    private final CiService ciService;
 
     private COSClient getCosClient() {
         // 1 初始化用户身份信息（secretId, secretKey）。
