@@ -44,7 +44,7 @@
         <cos_api.version>5.6.227</cos_api.version>
 
         <redisson.version>3.44.0</redisson.version>
-        <commons-io.version>2.11.0</commons-io.version>
+        <commons-io.version>2.14.0</commons-io.version>
 
         <!-- https://seata.io/zh-cn/docs/overview/what-is-seata.html -->
         <seata.version>2.2.0</seata.version>
