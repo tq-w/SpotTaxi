@@ -46,7 +46,11 @@ public class CheckLoginStatusAspect {
             AuthContextHolder.setUserId(Long.valueOf(userId));
         }
 
-        return proceedingJoinPoint.proceed();
+        try {
+            return proceedingJoinPoint.proceed();
+        } finally {
+            AuthContextHolder.removeUserId(); // 清理上下文
+        }
     }
 
 }
