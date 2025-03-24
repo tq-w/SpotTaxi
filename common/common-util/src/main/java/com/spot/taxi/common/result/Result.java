@@ -54,6 +54,9 @@ public class Result<T> {
      * @return
      */
     public static<T> Result<T> ok(T data){
+        if (data instanceof Boolean && !(Boolean) data) {
+            return build(null, ResultCodeEnum.FAIL);
+        }
         return build(data, ResultCodeEnum.SUCCESS);
     }
 
