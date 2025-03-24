@@ -27,6 +27,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.spot.taxi.common.constant.RedisConstant.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})
@@ -95,6 +97,35 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         return orderInfo.getStatus();
     }
 
+    // 随机决定是否执行
+    private boolean shouldCompensate() {
+        Random random = new Random();
+        // 这里设置随机概率为50%，可以根据需要调整
+        return random.nextBoolean();
+    }
+
+    // 用于压测单用原子扣减库存能否实现防止超卖
+//    @Override
+//    public Boolean takeNewOrder(Long driverId, Long orderId) {
+//        String redisKey = RedisConstant.ORDER_ACCEPT_MARK + orderId;
+//        // 1. 使用 Lua 脚本原子扣减库存（拦截 99% 无效请求）
+//        Long scriptResult = redisTemplate.execute(
+//                new DefaultRedisScript<>(DECREMENT_SCRIPT, Long.class),
+//                Collections.singletonList(redisKey)
+//        );
+//        // 库存不足或脚本执行失败
+//        if (scriptResult == -1) {
+//            return false;
+//        }
+//        if (shouldCompensate()) {
+//            redisTemplate.opsForValue().increment(redisKey);
+//            return false;
+//        }
+//        log.info("抢单成功，订单ID：{}", orderId);
+//        return true;
+//    }
+
+    // 1.3
     @Override
     public Boolean takeNewOrder(Long driverId, Long orderId) {
         String redisKey = RedisConstant.ORDER_ACCEPT_MARK + orderId;
@@ -110,16 +141,6 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 
             // 库存不足或脚本执行失败
             if (scriptResult == -1) {
-                return false;
-            }
-
-            // 2. 获取分布式锁（只有库存扣减成功的请求进入）
-            lock = redissonClient.getLock(TAKE_NEW_ORDER_LOCK + orderId);
-            locked = lock.tryLock(TAKE_NEW_ORDER_LOCK_WAIT_TIME, TAKE_NEW_ORDER_LOCK_LEASE_TIME, TimeUnit.SECONDS);
-
-            if (!locked) {
-                // 补偿库存（异步优化点：可放入队列延迟补偿）
-                redisTemplate.opsForValue().increment(redisKey);
                 return false;
             }
 
@@ -142,24 +163,81 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
                 redisTemplate.opsForValue().increment(redisKey);
                 return false;
             }
-
             return true;
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            // 补偿库存
-            redisTemplate.opsForValue().increment(redisKey);
-            throw new CustomException(ResultCodeEnum.TAKE_NEW_ORDER_FAIL);
         } catch (Exception e) {
             // 补偿库存
             redisTemplate.opsForValue().increment(redisKey);
             throw new CustomException(ResultCodeEnum.TAKE_NEW_ORDER_FAIL);
-        } finally {
-            if (lock != null && locked && lock.isHeldByCurrentThread()) {
-                lock.unlock();
-            }
         }
     }
 
+    // 1.2
+//    @Override
+//    public Boolean takeNewOrder(Long driverId, Long orderId) {
+//        String redisKey = RedisConstant.ORDER_ACCEPT_MARK + orderId;
+//        RLock lock = null;
+//        boolean locked = false;
+//
+//        try {
+//            // 1. 使用 Lua 脚本原子扣减库存（拦截 99% 无效请求）
+//            Long scriptResult = redisTemplate.execute(
+//                    new DefaultRedisScript<>(DECREMENT_SCRIPT, Long.class),
+//                    Collections.singletonList(redisKey)
+//            );
+//
+//            // 库存不足或脚本执行失败
+//            if (scriptResult == -1) {
+//                return false;
+//            }
+//
+//            // 2. 获取分布式锁（只有库存扣减成功的请求进入）
+//            lock = redissonClient.getLock(TAKE_NEW_ORDER_LOCK + orderId);
+//            locked = lock.tryLock(TAKE_NEW_ORDER_LOCK_WAIT_TIME, TAKE_NEW_ORDER_LOCK_LEASE_TIME, TimeUnit.SECONDS);
+//
+//            if (!locked) {
+//                // 补偿库存（异步优化点：可放入队列延迟补偿）
+//                redisTemplate.opsForValue().increment(redisKey);
+//                return false;
+//            }
+//
+//            // 3. 查询订单状态（幂等性检查）
+//            OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+//            if (orderInfo == null ||
+//                    !OrderStatus.WAITING_ACCEPT.getStatus().equals(orderInfo.getStatus())) {
+//                // 订单已被处理，回滚库存
+//                redisTemplate.opsForValue().increment(redisKey);
+//                return false;
+//            }
+//
+//            // 4. 更新订单状态
+//            orderInfo.setDriverId(driverId);
+//            orderInfo.setStatus(OrderStatus.ACCEPTED.getStatus());
+//            orderInfo.setAcceptTime(new Date());
+//
+//            if (orderInfoMapper.updateById(orderInfo) != 1) {
+//                // 数据库更新失败，回滚库存
+//                redisTemplate.opsForValue().increment(redisKey);
+//                return false;
+//            }
+//
+//            return true;
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            // 补偿库存
+//            redisTemplate.opsForValue().increment(redisKey);
+//            throw new CustomException(ResultCodeEnum.TAKE_NEW_ORDER_FAIL);
+//        } catch (Exception e) {
+//            // 补偿库存
+//            redisTemplate.opsForValue().increment(redisKey);
+//            throw new CustomException(ResultCodeEnum.TAKE_NEW_ORDER_FAIL);
+//        } finally {
+//            if (lock != null && locked && lock.isHeldByCurrentThread()) {
+//                lock.unlock();
+//            }
+//        }
+//    }
+
+// 1.1
 //    @Override
 //    public Boolean takeNewOrder(Long driverId, Long orderId) {
 //        // 1. 原子扣减库存（订单库存初始为1，扣减后为0）todo这里可能会出现两个线程都没通过的情况
@@ -204,7 +282,7 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
 //        }
 //    }
 
-
+// 1.0
 //    @Override
 //    public Boolean takeNewOrder(Long driverId, Long orderId) {
 //        if (!redisTemplate.hasKey(RedisConstant.ORDER_ACCEPT_MARK + orderId)) {
